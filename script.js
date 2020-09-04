@@ -1,6 +1,8 @@
 // VARS
 state = {
   level: "easy",
+  card1: "",
+  card2: "",
   cardId1: "",
   cardId2: "",
   cards: [
@@ -89,28 +91,66 @@ function create_game(card_number) {
   display_cards(card_number);
 }
 function display_cards(card_number) {
+  let iterator = 1;
   let arr = shuffle(arrtoshuffle);
   for (let index = 1; index <= card_number; index++) {
     const card = document.createElement("div");
     console.log(arr[index - 1]);
     card.classList.add(state.cards[arr[index - 1]].id);
-    card.classList.add("card");
+    card.classList.add("card", "id" + iterator);
+    iterator++;
+    console.log(card);
+
     const card_img = document.createElement("img");
     card_img.src = state.cards[arr[index - 1]].src;
     card.insertAdjacentElement("afterbegin", card_img);
     game_wraper.insertAdjacentElement("afterbegin", card);
+    card.addEventListener("click", card_on_click);
   }
   arr = shuffle(arrtoshuffle);
   for (let index = 1; index <= card_number; index++) {
     const card = document.createElement("div");
     console.log(arr[index - 1]);
     card.classList.add(state.cards[arr[index - 1]].id);
-    card.classList.add("card");
+    card.classList.add("card", "id" + iterator);
+    iterator++;
+    console.log(card);
     const card_img = document.createElement("img");
     card_img.src = state.cards[arr[index - 1]].src;
     card.insertAdjacentElement("afterbegin", card_img);
     game_wraper.insertAdjacentElement("afterbegin", card);
+    card.addEventListener("click", card_on_click);
   }
+}
+function card_on_click() {
+  if (!state.cardId1) {
+    state.card1 = this.classList[0];
+    state.cardId1 = this.classList[2];
+  } else if (state.cardId1 === this.classList[2]) {
+    console.log("the same card! choose something else");
+    return;
+  } else if (!state.cardId2) {
+    state.cardId2 = this.classList[2];
+    state.card2 = this.classList[0];
+    if (state.card1 === state.card2) {
+      console.log("BOOM!");
+      //   flipCards()
+      resetstate();
+    }
+    resetstate();
+  }
+  console.log(state.card1, state.card2);
+
+  //check_both_cards();
+  console.log("card1", state.card1);
+  console.log("card2", state.card2);
+}
+function resetstate() {
+  console.log("reset");
+  state.card1 = "";
+  state.card2 = "";
+  state.cardId1 = "";
+  state.cardId2 = "";
 }
 function shuffle(array) {
   let counter = array.length;
