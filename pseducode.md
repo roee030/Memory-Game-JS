@@ -1,0 +1,14 @@
+functions
+init game-display the game
+create cards - display card on the screen (on flex box)
+choose level - difficult level
+
+card clickable onClick -> check on state if the card is === to another card, but if the plyaer choose the first card he just border and let him choose another card. the state will change each round. by click the first card we check the state if its the first one or not by his ID.
+
+state = {
+cardID1
+cardID2
+level
+cards[]
+
+}
