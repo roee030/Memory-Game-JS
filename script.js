@@ -67,6 +67,7 @@ state = {
       name: "בירמן",
     },
   ],
+  num_of_card: 0,
 };
 const arrtoshuffle = [1, 2, 3, 4, 5, 6];
 const start_btn = document.querySelector('input[type="submit"]');
@@ -88,6 +89,7 @@ function get_difficult() {
   }
 }
 function create_game(card_number) {
+  state.num_of_card = card_number;
   display_cards(card_number);
 }
 function display_cards(card_number) {
@@ -134,6 +136,11 @@ function card_on_click() {
     state.card2 = this.classList[0];
     if (state.card1 === state.card2) {
       console.log("BOOM!");
+      state.num_of_card--;
+      console.log("state.num_of_card", state.num_of_card);
+      if (state.num_of_card == 0) {
+        console.log("Finish!");
+      }
       //   flipCards()
       resetstate();
     }
