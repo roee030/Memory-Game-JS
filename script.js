@@ -5,6 +5,8 @@ state = {
   card2: "",
   cardId1: "",
   cardId2: "",
+  card1_div: "",
+  card2_div: "",
   cards: [
     {
       src: `https://upload.wikimedia.org/wikipedia/commons/9/9d/Britishblue.jpg`,
@@ -72,6 +74,8 @@ state = {
 const arrtoshuffle = [1, 2, 3, 4, 5, 6];
 const start_btn = document.querySelector('input[type="submit"]');
 const game_wraper = document.querySelector(".game-wraper");
+const new_game_btn = document.querySelector(".new_game");
+const welcome_popup = document.querySelector(".welcome-popup");
 // FUNCTIONS
 function get_difficult() {
   const level1 = document.querySelector('input[id="level1"]');
@@ -91,6 +95,8 @@ function get_difficult() {
 function create_game(card_number) {
   state.num_of_card = card_number;
   display_cards(card_number);
+  new_game_btn.style.display = "flex";
+  welcome_popup.style.display = "none";
 }
 function display_cards(card_number) {
   let iterator = 1;
@@ -125,15 +131,26 @@ function display_cards(card_number) {
   }
 }
 function card_on_click() {
+  let first_card = "";
+  let second_card = "";
   if (!state.cardId1) {
     state.card1 = this.classList[0];
     state.cardId1 = this.classList[2];
+    state.card1_div = this;
+    console.log(first_card);
+    const card_src1 = return_img_src(state.card1)[0].src;
+    console.log(first_card);
+    this.style.content = `url(${card_src1})`;
   } else if (state.cardId1 === this.classList[2]) {
     console.log("the same card! choose something else");
     return;
   } else if (!state.cardId2) {
     state.cardId2 = this.classList[2];
     state.card2 = this.classList[0];
+    state.card2_div = this;
+    console.log(second_card);
+    const card_src2 = return_img_src(state.card2)[0].src;
+    this.style.content = `url(${card_src2})`;
     if (state.card1 === state.card2) {
       console.log("BOOM!");
       state.num_of_card--;
@@ -143,6 +160,12 @@ function card_on_click() {
       }
       //   flipCards()
       resetstate();
+    } else {
+      console.log("Its not the same card");
+      setTimeout(() => {
+        state.card1_div.style.content = `url(https://janissharesscienceforkids.files.wordpress.com/2014/03/cats-family.gif)`;
+        state.card2_div.style.content = `url(https://janissharesscienceforkids.files.wordpress.com/2014/03/cats-family.gif)`;
+      }, 1500);
     }
     resetstate();
   }
@@ -178,7 +201,17 @@ function shuffle(array) {
 
   return array;
 }
-
+function return_img_src(id) {
+  const cat_src = state.cards.filter((e) => e.id == id);
+  return cat_src;
+}
+function new_game() {
+  game_wraper.innerHTML = "";
+  welcome_popup.style.display = "flex";
+}
 //EVNETS
 
 start_btn.addEventListener("click", get_difficult);
+new_game_btn.addEventListener("click", new_game);
+
+console.log(return_img_src(2)[0].src);
