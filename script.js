@@ -9,6 +9,11 @@ state = {
   card2_div: "",
   cards: [
     {
+      src: `https://lh3.googleusercontent.com/proxy/7qEcqSV2mmy8gl68U5_AHYjuFLncvosc9Z2Gjr1gMlywhgQhFX6iTMSehTJtlQTAHXXykWwNYElCAzS2eKhygiP0kKyemMJA1O-JWwlKJBrtRgNksYe7hXDXXblMPD3CWBQum2IomF5Q-2A9`,
+      id: 0,
+      name: "בירמן",
+    },
+    {
       src: `https://upload.wikimedia.org/wikipedia/commons/9/9d/Britishblue.jpg`,
       id: 1,
       name: "חתול בריטי קצר-שיער",
@@ -63,15 +68,14 @@ state = {
       id: 11,
       name: "אקזוטי קצר שיער",
     },
-    {
-      src: `https://lh3.googleusercontent.com/proxy/7qEcqSV2mmy8gl68U5_AHYjuFLncvosc9Z2Gjr1gMlywhgQhFX6iTMSehTJtlQTAHXXykWwNYElCAzS2eKhygiP0kKyemMJA1O-JWwlKJBrtRgNksYe7hXDXXblMPD3CWBQum2IomF5Q-2A9`,
-      id: 12,
-      name: "בירמן",
-    },
+    ,
   ],
   num_of_card: 0,
 };
 const arrtoshuffle = [1, 2, 3, 4, 5, 6];
+const arrtoshuffle1 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const arrtoshuffle2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+const you_win = document.querySelector(".you-win");
 const start_btn = document.querySelector('input[type="submit"]');
 const game_wraper = document.querySelector(".game-wraper");
 const new_game_btn = document.querySelector(".new_game");
@@ -86,10 +90,12 @@ function get_difficult() {
     create_game(6);
   }
   if (level2.checked == true) {
-    console.log("222");
+    state.level = "medium";
+    create_game(9);
   }
   if (level3.checked == true) {
-    console.log("222");
+    state.level = "hard";
+    create_game(12);
   }
 }
 function create_game(card_number) {
@@ -100,7 +106,16 @@ function create_game(card_number) {
 }
 function display_cards(card_number) {
   let iterator = 1;
-  let arr = shuffle(arrtoshuffle);
+  let arr;
+  if (card_number == 6) {
+    arr = shuffle(arrtoshuffle);
+  }
+  if (card_number == 9) {
+    arr = shuffle(arrtoshuffle1);
+  }
+  if (card_number == 12) {
+    arr = shuffle(arrtoshuffle1);
+  }
   for (let index = 1; index <= card_number; index++) {
     const card = document.createElement("div");
     console.log(arr[index - 1]);
@@ -115,7 +130,15 @@ function display_cards(card_number) {
     game_wraper.insertAdjacentElement("afterbegin", card);
     card.addEventListener("click", card_on_click);
   }
-  arr = shuffle(arrtoshuffle);
+  if (card_number == 6) {
+    arr = shuffle(arrtoshuffle);
+  }
+  if (card_number == 9) {
+    arr = shuffle(arrtoshuffle1);
+  }
+  if (card_number == 12) {
+    arr = shuffle(arrtoshuffle1);
+  }
   for (let index = 1; index <= card_number; index++) {
     const card = document.createElement("div");
     console.log(arr[index - 1]);
@@ -133,6 +156,10 @@ function display_cards(card_number) {
 function card_on_click() {
   let first_card = "";
   let second_card = "";
+  if (this.classList[3]) {
+    console.log("check!!!!!");
+    return;
+  }
   if (!state.cardId1) {
     state.card1 = this.classList[0];
     state.cardId1 = this.classList[2];
@@ -151,11 +178,16 @@ function card_on_click() {
     console.log(second_card);
     const card_src2 = return_img_src(state.card2)[0].src;
     this.style.content = `url(${card_src2})`;
-    if (state.card1 === state.card2) {
+    if (state.card2 && state.card1 === state.card2) {
       console.log("BOOM!");
+      state.card2_div.classList.add("check");
+      state.card1_div.classList.add("check");
+      console.log(state.card1_div, state.card2_div);
+
       state.num_of_card--;
       console.log("state.num_of_card", state.num_of_card);
       if (state.num_of_card == 0) {
+        you_win.style.display = "flex";
         console.log("Finish!");
       }
       //   flipCards()
